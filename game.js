@@ -1,9 +1,12 @@
+//Accessing the elements
 let boxes = document.querySelectorAll(".box");
 let restartBtn = document.querySelector("#restart-btn");
 let msgBox = document.querySelector(".msg-box");
 let msg = document.querySelector("#msg");
 
-let turnO = true; //playerX, playerO
+let turnO = true; //Boolean to keep track of whose turn it is (true for player O, false for player X)
+
+// Define the winning patterns for the game (tic-tac-toe)
 const winning_patterns = [
   [0, 1, 2],
   [3, 4, 5],
@@ -19,6 +22,7 @@ let moves = 0;
 
 boxes.forEach((box) => {
   box.addEventListener("click", () => {
+    // Check whose turn it is and update the box accordingly
     if (turnO) {
       box.innerHTML = "O";
       turnO = false;
@@ -26,24 +30,34 @@ boxes.forEach((box) => {
       box.innerHTML = "X";
       turnO = true;
     }
-    box.disabled = true;
+    box.disabled = true; // Disable the box to prevent further clicks
 
     moves++;
     if (checkWinner()) {
+      // Check if there is a winner
       return;
     }
     if (moves === 9) {
+      // Check if the game is a draw
       checkDraw();
     }
   });
 });
 
+/**
+ * Show the winner of the game
+ * @param {string} winner
+ */
 const showWinner = (winner) => {
   msg.innerText = `Winner is ${winner}`;
   msgBox.classList.remove("hide");
   endGame();
 };
 
+/**
+ * Check for a winner
+ * @returns {boolean}
+ */
 const checkWinner = () => {
   for (let pattern of winning_patterns) {
     let position1value = boxes[pattern[0]].innerText;
@@ -84,6 +98,7 @@ const enableBoxes = () => {
 };
 
 const resetGame = () => {
+  //Reset the game state
   turnO = true;
   enableBoxes();
   msgBox.classList.add("hide");
